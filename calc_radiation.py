@@ -44,7 +44,7 @@ def calc_rad():
                     rad_values.append(grb.values)
                 else:
                     value = grb.values
-                    grb.values = abs(grb.values - rad_values[count-1])
+                    grb.values = grb.values - rad_values[count-1]
                     rad_values[count-1] = value
 
             # Calculate total precipitation, multiply by 1000
