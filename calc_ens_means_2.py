@@ -15,6 +15,17 @@ os.chdir(initial_directory)
 
 file_list = []
 
+def add_values(list_name, counter, values):
+    if (not list_name):
+        list_name = []
+        counter = 1
+        list_name.append(values)
+    else:
+        counter = counter + 1
+        list_name.append(values)
+    return counter
+
+
 def list_files():
     os.chdir(initial_directory)
 
@@ -27,6 +38,7 @@ def calc_rad():
 
     grbs = {}
     rad_values = []
+    name_list = []
     
     for i in range(0, (len(file_list))):
         grbs[i] = pygrib.open(file_list[i])
@@ -35,25 +47,23 @@ def calc_rad():
             grb
         print(file_list[i])
         print(grbs[i].tell())
-        count = 0
         for j in range(1, (grbs[i].tell() + 1)):
             grb = grbs[i].message(j)
             
+            add_values("values_{0}".format(grb.name.replace(" ", "")), "values_{0}".format(grb.name.replace(" ", "")), grb.values)
             # Calculate radiation
-            if ('list_' + grb.name):
-                ('list_' + grb.name).append(grb.values)
-                ('count_' + grb.name) == ('count_' + grb.name)
-            else:
-                'list_' + grb.name = []
+            
+            # if ("values_{0}".format(grb.name.replace(" ", "")) in name_list):
+            #     ("values_{0}".format(grb.name.replace(" ", ""))).append(grb.values)
+            #     ("values_{0}".format(grb.name.replace(" ", ""))) == ("values_{0}".format(grb.name.replace(" ", ""))) + 1
+            # else:
+            #     name_list.append("values_{0}".format(grb.name.replace(" ", "")))
+            #     ("values_{0}".format(grb.name.replace(" ", ""))).append(grb.values) = []
 
-            if (grb.name == '2 metre temperature'):
-                print(grb.name)
-                count = count + 1
-                rad_values.append(grb.values)
-                if count == 50:
-                    array = np.array(rad_values)
-                    grb.values = np.mean(array, axis= 0)
-                    msg = grb.tostring()
+            
+                    
+            grb.values = np.mean(array, axis= 0)
+            msg = grb.tostring()
                 # print(grb.values)
                 # if len(rad_values) != 50: # message count in file
                 #     rad_values.append(grb.values)
@@ -81,3 +91,6 @@ def calc_rad():
 if __name__ == '__main__':
     list_files()
     calc_rad()
+
+def create_counter(counter_name):
+    counter = 0
